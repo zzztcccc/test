@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双指滑动效果</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 页面布局 */
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+}
+
+.container {
+    position: relative;
+}
+
+/* 图片样式 */
+#image {
+    width: 300px;
+    height: auto;
+    transition: opacity 2s ease-out;  /* 缓慢消失的动画效果 */
+}
+
+/* 动画：图片消失 */
+.fade-out {
+    opacity: 0;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="image" src="img/纸下.png" alt="纸下图" />
+    </div>
+    <script src="script.js"></script>
+    <script>
+        let touchStart = {};
+let touchEnd = {};
+const image = document.getElementById('image');
+
+// 监听触摸开始事件
+document.addEventListener('touchstart', function(event) {
+    if (event.touches.length === 2) {
+        touchStart.x1 = event.touches[0].pageX;
+        touchStart.y1 = event.touches[0].pageY;
+        touchStart.x2 = event.touches[1].pageX;
+        touchStart.y2 = event.touches[1].pageY;
+    }
+});
+
+// 监听触摸结束事件
+document.addEventListener('touchend', function(event) {
+    if (event.touches.length === 0) {
+        touchEnd.x1 = event.changedTouches[0].pageX;
+        touchEnd.y1 = event.changedTouches[0].pageY;
+
+        // 检测是否是双指滑动
+        if (touchStart.x1 && touchStart.x2) {
+            const deltaX = Math.abs(touchEnd.x1 - touchStart.x1);
+            const deltaY = Math.abs(touchEnd.y1 - touchStart.y1);
+
+            if (deltaX > 100 || deltaY > 100) { // 滑动距离大于100px，认为是有效的滑动
+                image.classList.add('fade-out');  // 添加消失动画
+            }
+        }
+    }
+});
+
+    </script>
+</body>
+</html>
