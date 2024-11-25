@@ -56,9 +56,18 @@
 
       .daoh {
         position: absolute;
-        width: 10%;
+        width: 8%;
         left: 50%;
         bottom: 10px;
+        transform: translate(-50%, 0);
+        cursor: pointer;
+        z-index: 2;
+      }
+      .shang{
+        position: absolute;
+        width: 8%;
+        left: 50%;
+        top: 10px;
         transform: translate(-50%, 0);
         cursor: pointer;
         z-index: 2;
@@ -81,7 +90,11 @@
       <img class="title" src="img/标题.png" alt="标题">
       <img class="zhi" src="img/纸上.png" alt="纸上">
       <img class="zhi1" src="img/纸下.png" alt="纸下">
-      <a href="other/shitu1.html"><img class="daoh" src="img/导航.png" alt="导航"></a>
+      <a href="other/shitu1.html"><img class="daoh" src="img/返回键3.png" alt="导航"></a>
+      <img class="shang" src="img/返回键2.png" alt="上标">
+      <!-- <img class="xai" src="img/下标.png" alt="下标">
+      <img class="shang" src="img/上标.jpg" alt="上标"> -->
+      
     </div>
 
     <script>
@@ -105,6 +118,7 @@
       // 判断是否是双指滑动并处理
       document.body.addEventListener('touchmove', function(e) {
         if (e.touches.length === 2 && startTouch) {
+            //deltaX 和 deltaY 是实时变化的
           const deltaX = e.touches[0].clientX - e.touches[1].clientX;
           const deltaY = e.touches[0].clientY - e.touches[1].clientY;
 
