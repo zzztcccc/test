@@ -73,13 +73,11 @@
         z-index: 2;
       }
 
-      .daoh:hover {
-        opacity: 0.5;
-      }
-
+     
       /* 用于双指滑动时让图片淡出的样式 */
       .fade-out {
         opacity: 0; /* 消失 */
+        transition: opacity 1s ease-out; /* 在 1 秒内淡出 */
       }
     </style>
   </head>
@@ -135,8 +133,8 @@
             shang.classList.add('fade-out');
             // 可以选择在动画结束后再做清理或者其他操作
             setTimeout(() => {
-              // 清除触摸事件或执行其他逻辑
-              window.location.href = '下一页面.html';
+              
+              window.location.href = "前端作业2/jiazai.html";
             }, 2000); // 动画持续时间为秒
           }
         }
