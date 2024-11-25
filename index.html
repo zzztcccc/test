@@ -103,7 +103,8 @@
 
       const zhi = document.querySelector('.zhi');
       const zhi1 = document.querySelector('.zhi1');
-
+      const xia = document.querySelector('.xia');
+      const shang = document.querySelector('.shang');
       // 监听双指触摸事件
       document.body.addEventListener('touchstart', function(e) {
         if (e.touches.length === 2) {
@@ -130,11 +131,13 @@
             // 双指滑动检测到，触发淡出效果
             zhi.classList.add('fade-out');
             zhi1.classList.add('fade-out');
-
+            xia.classList.add('fade-out');
+            shang.classList.add('fade-out');
             // 可以选择在动画结束后再做清理或者其他操作
             setTimeout(() => {
               // 清除触摸事件或执行其他逻辑
-            }, 1000); // 动画持续时间为1秒
+              window.location.href = '下一页面.html';
+            }, 2000); // 动画持续时间为秒
           }
         }
       }, false);
