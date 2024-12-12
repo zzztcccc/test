@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用户操作指引</title>
+  <style>
+    /* 设置整个页面的样式 */
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      background: url("C:\\Users\\z\\Pictures\\web\\web1.jpg") no-repeat center center fixed;
+      background-size: cover; /* 背景图片覆盖 */
+    }
+
+    /* 遮罩层的样式，初始为半透明黑色 */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色 */
+      z-index: 1;
+      transition: opacity 0.5s ease; /* 过渡效果，渐变透明 */
+    }
+
+    /* 提示文本样式 */
+    .tooltip-text {
+      position: relative;
+      color: white; /* 设置字体颜色为白色 */
+      font-size: 20px; /* 字体大小 */
+      font-family: "佛系演示体", sans-serif; /* 使用佛系演示体字体 */
+      font-weight: bold; /* 字体加粗 */
+      z-index: 2; /* 确保提示文本显示在遮罩层之上 */
+      text-align: center;
+      pointer-events: none; /* 防止文本遮挡交互 */
+    }
+
+    /* 提示文本的初始位置 */
+    #tooltip-flower {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    #tooltip-vase {
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+
+    /* 箭头图片样式 */
+    .arrow-img {
+      position: absolute;
+      z-index: 3;
+      width: 40px; /* 根据需要调整箭头图片的宽度 */
+      height: auto; /* 保持宽高比 */
+      filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5)); /* 添加阴影效果 */
+    }
+
+    /* 向上的箭头图片 */
+    .arrow-up {
+      top: -25px; /* 缩短箭头与文字之间的距离 */
+      left: 50%;
+      transform: translateX(-50%) translateX(-13.33px); /* 缩进1/3图片宽度 */
+    }
+
+    /* 向下的箭头图片 */
+    .arrow-down {
+      bottom: -25px; /* 缩短箭头与文字之间的距离 */
+      left: 50%;
+      transform: translateX(-50%) translateX(-13.33px); /* 缩进1/3图片宽度 */
+    }
+    
+    @font-face {
+      font-family: 'ziti2';
+      src: url('字灵倾心体(商用需授权).ttf');
+    }
+
+    #tooltip-vase {
+      font-family: 'ziti2';
+      font-size: 30px;
+    }
+
+    #tooltip-flower {
+      font-family: 'ziti2';
+      font-size: 30px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 遮罩层 -->
+  <div class="overlay"></div>
+
+  <!-- 提示：点击这里选择花 -->
+  <div id="tooltip-flower" class="tooltip-text">
+    点击这里选择花
+    <img src="C:\\Users\\z\\Pictures\\web\\s.png" alt="向上箭头" class="arrow-img arrow-up"> <!-- 向上的箭头图片 -->
+  </div>
+
+  <!-- 提示：点击这里选择花瓶 -->
+  <div id="tooltip-vase" class="tooltip-text">
+    点击这里选择花瓶
+    <img src="C:\\Users\\z\\Pictures\\web\\x.png" alt="向下箭头" class="arrow-img arrow-down"> <!-- 向下的箭头图片 -->
+  </div>
+
+  <!-- JavaScript 控制逻辑 -->
+  <script>
+    // 显示第一个提示
+    document.getElementById('tooltip-flower').style.display = 'block';
+
+    // 获取遮罩层元素
+    var overlay = document.querySelector('.overlay');
+
+    // 添加点击事件监听器到body，当点击时检查是否点击了特定区域
+    document.body.addEventListener('click', function(event) {
+      var flowerTooltip = document.getElementById('tooltip-flower');
+      var vaseTooltip = document.getElementById('tooltip-vase');
+
+      // 检查是否已经点击过选择花
+      if (flowerTooltip.style.display !== 'none') {
+        // 如果是第一次点击，则隐藏选择花的提示并显示选择花瓶的提示
+        flowerTooltip.style.display = 'none';
+        vaseTooltip.style.display = 'block';
+      } else if (vaseTooltip.style.display !== 'none') {
+        // 如果点击了选择花瓶的区域，则隐藏提示
+        vaseTooltip.style.display = 'none';
+
+        // 隐藏遮罩层，让背景图完全显现
+        overlay.style.opacity = '0'; // 渐变效果
+      }
+    });
+  </script>
+</body>
+</html>
