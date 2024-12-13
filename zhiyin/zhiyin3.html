@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>响应式背景图片设计</title>
+  <style>
+    /* 确保页面和html元素的宽高是100% */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    /* 设置背景图片 */
+    .background-container {
+      height: 100vh; /* 高度为视口高度 */
+      width: 100%; /* 宽度为100% */
+      background-image: url('file:///D:/ccode/web%E6%9C%9F%E6%9C%AB%E4%BD%9C%E4%B8%9A/shouye/img/web2.jpg'); /* 这里替换为你的图片路径 */
+      background-size: cover; /* 背景图覆盖整个容器 */
+      background-position: center center; /* 背景图居中 */
+      background-repeat: no-repeat; /* 防止背景图片重复 */
+    }
+
+    /* 你可以在此添加其他内容，如文本、按钮等，确保这些内容在背景之上 */
+    .content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 2rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 背景容器 -->
+  <div class="background-container">
+    <div class="content">
+      <h1>响应式背景图片</h1>
+      <p>背景图会随着屏幕大小变化而变化。</p>
+    </div>
+  </div>
+
+</body>
+</html>
