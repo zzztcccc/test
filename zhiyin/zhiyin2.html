@@ -5,17 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>用户操作指引</title>
   <style>
-   
-    body, html {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      position: relative;
-      background: url("../img/web1.jpg") no-repeat center center fixed;
-      background-size: cover; /* 背景图片覆盖 */
-    }
+  body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: url("../img/web1.jpg") no-repeat center center fixed;
+  background-size: cover; /* 背景图像覆盖整个容器并保持比例 */
+  background-position: center center; /* 确保背景图居中 */
+  background-attachment: fixed; /* 固定背景图，随着页面滚动 */
+}
 
     /* 遮罩层的样式，初始为半透明黑色 */
     .overlay {
@@ -31,9 +32,8 @@
 
     /* 提示文本样式 */
     .tooltip-text {
-      position: relative;
+      position: absolute;
       color: white;
-      font-size: 20px; 
       font-family: "佛系演示体", sans-serif; /* 使用佛系演示体字体 */
       font-weight: bold; /* 字体加粗 */
       z-index: 2; /* 确保提示文本显示在遮罩层之上 */
@@ -46,6 +46,7 @@
       top: 13%;
       left: 50%;
       transform: translate(-50%, -50%);
+      font-size: 20px;
     }
     
     #tooltip-vase {
@@ -53,9 +54,8 @@
       left: 50%;
       transform: translate(-50%, -50%);
       display: none;
+      font-size: 20px;
     }
-
-  
 
     /* 箭头图片样式 */
     .arrow-img {
@@ -75,50 +75,61 @@
 
     /* 向下的箭头图片 */
     .arrow-down {
-      bottom: -25px; 
+      bottom: -25px;
       left: 50%;
-      transform: translateX(-50%) translateX(-13.33px); 
+      transform: translateX(-50%) translateX(-13.33px);
     }
-    
+
     @font-face {
       font-family: 'ziti2';
       src: url('字灵倾心体(商用需授权).ttf');
     }
 
-    #tooltip-vase {
+    #tooltip-vase, #tooltip-flower {
       font-family: 'ziti2';
       font-size: 30px;
     }
 
-    #tooltip-flower {
+    /* 新的指引：点击切换 */
+    #tooltip-switch {
+      position: absolute;
+      left: 5%;
+      bottom: 20%;
       font-family: 'ziti2';
       font-size: 30px;
+      color: white;
+      font-weight: bold;
+      z-index: 2; /* 确保显示在遮罩层上 */
+      text-align: left;
+      display: none; /* 初始时隐藏 */
     }
 
-   
+    /* 新的指引照片 */
     .switch-img {
-    position: absolute;
-    left: 5%; 
-    bottom: 15%; 
-    width: 28px;
-    height: auto; /* 自动调整高度，保持图片的纵横比 */
-    z-index: 3;
-    display: none; /* 初始时隐藏 */
-  }
+      position: absolute;
+      left: 5%;
+      bottom: 15%;
+      width: 28px;
+      height: auto; /* 自动调整高度，保持图片的纵横比 */
+      z-index: 3;
+      display: none; /* 初始时隐藏 */
+    }
 
-  /* 新的指引：点击切换 */
-  #tooltip-switch {
-    position: absolute;
-    left: 5%;
-    bottom: 20%; 
-    font-family: 'ziti2';
-    font-size: 30px;
-    color: white;
-    font-weight: bold;
-    z-index: 2; /* 确保显示在遮罩层上 */
-    text-align: left;
-    display: none; /* 初始时隐藏 */
-  }
+    /* 整个页面等比例缩放 */
+    @media (max-width: 1200px) {
+      body, html {
+        transform-origin: top left;
+        transform: scale(calc(1200 / 100vw));
+      }
+    }
+
+    @media (max-height: 800px) {
+      body, html {
+        transform-origin: top left;
+        transform: scale(calc(800 / 100vh));
+      }
+    }
+
   </style>
 </head>
 <body>
