@@ -18,15 +18,16 @@
     body {
       background-color: #f0f0f0; /* 可选：设置背景颜色 */
       background: url("../img/web1.jpg") no-repeat center center;
-      background-size: contain; /* 确保图片完全可见，允许留白 */
+      background-size: cover; /* 让背景图覆盖整个容器并保持比例 */
       background-position: center center; /* 背景居中 */
       background-attachment: scroll; /* 移动设备上不固定背景图 */
+      height: 100vh; /* 设置背景图的高度为视口高度 */
     }
 
+    /* 当视口宽度大于768px时，恢复背景图设置 */
     @media (min-width: 768px) {
-      /* 对于较大的屏幕，恢复为原来的背景设置 */
       body {
-        background-size: cover; /* 覆盖整个容器并保持比例 */
+        background-size: cover; /* 确保背景图覆盖整个容器 */
         background-attachment: fixed; /* 固定背景图，随着页面滚动 */
       }
     }
@@ -143,7 +144,7 @@
       }
 
       .switch-img {
-        width: 8vw; /* 调整指引图像大小 */
+        width: 6vw; /* 调整指引图像大小 */
       }
     }
 
@@ -157,7 +158,7 @@
       }
 
       .switch-img {
-        width: 12vw; /* 调整指引图像大小 */
+        width: 8vw; /* 调整指引图像大小 */
       }
     }
   </style>
