@@ -2,48 +2,238 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>响应式背景图片设计</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <title>用户操作指引</title>
   <style>
-    /* 确保页面和html元素的宽高是100% */
+    /* 确保body和html元素占据整个视口 */
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
       width: 100%;
+      height: 100%;
+      overflow: hidden; /* 防止滚动条出现 */
     }
 
-    /* 设置背景图片 */
-    .background-container {
-      height: 100vh; /* 高度为视口高度 */
-      width: 100%; /* 宽度为100% */
-      background-image: url('file:///D:/ccode/web%E6%9C%9F%E6%9C%AB%E4%BD%9C%E4%B8%9A/shouye/img/web2.jpg'); /* 这里替换为你的图片路径 */
-      background-size: cover; /* 背景图覆盖整个容器 */
-      background-position: center center; /* 背景图居中 */
-      background-repeat: no-repeat; /* 防止背景图片重复 */
+    /* 设置背景颜色或样式 */
+    body {
+      background-color: #f0f0f0; /* 可选：设置背景颜色 */
+      background: url("../img/web1.jpg") no-repeat center center fixed;
+      background-size: cover; /* 背景覆盖整个容器并保持比例 */
+      background-position: center center; /* 背景居中 */
+      background-attachment: fixed; /* 固定背景图，随着页面滚动 */
+      /* 修正背景图在较窄屏幕上的显示 */
+      height: 100vh; /* 确保背景图高度始终为视口高度 */
     }
 
-    /* 你可以在此添加其他内容，如文本、按钮等，确保这些内容在背景之上 */
-    .content {
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* 遮罩层的样式，初始为半透明黑色 */
+    .overlay {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色 */
+      z-index: 1;
+      transition: opacity 0.5s ease; /* 过渡效果，渐变透明 */
+    }
+
+    /* 提示文本样式 */
+    .tooltip-text {
+      position: absolute;
       color: white;
-      font-size: 2rem;
+      font-family: "佛系演示体", sans-serif; /* 使用佛系演示体字体 */
+      font-weight: bold; /* 字体加粗 */
+      z-index: 2; /* 确保提示文本显示在遮罩层之上 */
       text-align: center;
+      pointer-events: none; /* 防止文本遮挡交互 */
+      font-size: 4vw; /* 使用 vw 单位使字体大小与屏幕宽度成比例 */
+    }
+
+    /* 提示文本的初始位置 */
+    #tooltip-flower {
+      position: absolute;
+      top: 13vh; /* 调整文本位置 */
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-family: "佛系演示体", sans-serif;
+      font-weight: bold;
+      z-index: 2;
+      text-align: center;
+      pointer-events: none;
+      font-size: 4vw;
+    }
+
+    #tooltip-vase {
+      top: 70vh;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+    }
+
+    #tooltip-switch {
+      top: 75vh;
+      left: 20%;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+
+    /* 箭头图片样式 */
+    .arrow-img {
+      position: absolute;
+      z-index: 3;
+      width: 6vw; /* 使用 vw 单位来调整箭头的大小 */
+      height: auto;
+      filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5)); /* 添加阴影效果 */
+    }
+
+    /* 向上的箭头图片 */
+    .arrow-up {
+      position: absolute;
+      top: 8vh; /* 调整箭头的位置，使其不随文本的top变化 */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6vw; /* 保持响应式的大小 */
+    }
+
+    /* 向下的箭头图片 */
+    .arrow-down {
+      bottom: -6vh;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @font-face {
+      font-family: 'ziti2';
+      src: url('字灵倾心体(商用需授权).ttf');
+    }
+
+    #tooltip-vase, #tooltip-flower, #tooltip-switch {
+      font-family: 'ziti2';
+    }
+
+    /* 新的指引照片 */
+    .switch-img {
+      position: absolute;
+      left: 5%;
+      bottom: 15vh;
+      width: 8vw;
+      height: auto;
+      z-index: 3;
+      display: none;
+    }
+
+    /* 媒体查询 - 针对更小的屏幕 */
+    @media (max-width: 768px) {
+      #tooltip-flower, #tooltip-vase, #tooltip-switch {
+        font-size: 6vw; /* 在小屏幕下，调整字体大小 */
+      }
+
+      .arrow-img {
+        width: 10vw; /* 调整箭头图标大小 */
+      }
+
+      .switch-img {
+        width: 8vw; /* 调整指引图像大小 */
+      }
+    }
+
+    @media (max-width: 480px) {
+      #tooltip-flower, #tooltip-vase, #tooltip-switch {
+        font-size: 6vw; /* 在超小屏幕下，进一步调整字体大小 */
+      }
+
+      .arrow-img {
+        width: 10vw; /* 调整箭头图标大小 */
+      }
+
+      .switch-img {
+        width: 12vw; /* 调整指引图像大小 */
+      }
     }
   </style>
 </head>
 <body>
+  <!-- 容器 -->
+  <div class="container">
+    <!-- 遮罩层 -->
+    <div class="overlay"></div>
 
-  <!-- 背景容器 -->
-  <div class="background-container">
-    <div class="content">
-      <h1>响应式背景图片</h1>
-      <p>背景图会随着屏幕大小变化而变化。</p>
+    <!-- 提示：点击这里选择花 -->
+    <div id="tooltip-flower" class="tooltip-text">
+      点击这里选择花
     </div>
+    <img src="../img/s.png" alt="向上箭头" class="arrow-img arrow-up"> <!-- 向上的箭头图片 -->
+    
+
+    <!-- 提示：点击这里选择花瓶 -->
+    <div id="tooltip-vase" class="tooltip-text">
+      点击这里选择花瓶
+      <img src="../img/x.png" alt="向下箭头" class="arrow-img arrow-down"> <!-- 向下的箭头图片 -->
+    </div>
+
+    <!-- 新的指引：点击切换 -->
+    <div id="tooltip-switch" class="tooltip-text">
+      点击切换
+    </div>
+
+    <!-- 新的指引照片 -->
+    <img src="../img/qx.png" alt="指引照片" class="switch-img">
   </div>
 
+  <!-- JavaScript 控制逻辑 -->
+  <script>
+    var clickCount = 0; // 点击次数计数器
+
+    // 显示第一个提示
+    document.getElementById('tooltip-flower').style.display = 'block';
+    document.querySelector('.arrow-up').style.display = 'block'; // 显示箭头图片
+
+    // 获取遮罩层元素
+    var overlay = document.querySelector('.overlay');
+
+    // 添加点击事件监听器到body，当点击时检查是否点击了特定区域
+    document.body.addEventListener('click', function(event) {
+      var flowerTooltip = document.getElementById('tooltip-flower');
+      var vaseTooltip = document.getElementById('tooltip-vase');
+      var switchTooltip = document.getElementById('tooltip-switch');
+      var switchImage = document.querySelector('.switch-img');
+      var arrowUp = document.querySelector('.arrow-up'); // 获取箭头元素
+      var arrowDown = document.querySelector('.arrow-down'); // 获取箭头元素
+
+      clickCount++; // 每次点击时，点击计数加1
+
+      // 第一次点击，显示选择花的提示
+      if (clickCount === 1 && flowerTooltip.style.display !== 'none') {
+        flowerTooltip.style.display = 'none';
+        arrowUp.style.display = 'none'; // 隐藏向上箭头
+        vaseTooltip.style.display = 'block';
+        arrowDown.style.display = 'block'; // 显示向下箭头
+      } 
+      // 第二次点击，显示选择花瓶的提示
+      else if (clickCount === 2 && vaseTooltip.style.display !== 'none') {
+        vaseTooltip.style.display = 'none';
+        arrowDown.style.display = 'none'; // 隐藏向下箭头
+        switchTooltip.style.display = 'block';
+        switchImage.style.display = 'block'; // 显示指引照片
+      } 
+      // 第三次点击，隐藏所有提示，显示背景并移除遮罩
+      else if (clickCount === 3) {
+        switchTooltip.style.display = 'none';
+        switchImage.style.display = 'none'; // 隐藏指引照片
+        overlay.style.opacity = '0'; // 隐藏遮罩层
+      }
+    });
+  </script>
 </body>
 </html>
