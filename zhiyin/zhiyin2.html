@@ -1,70 +1,39 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-  <title>用户操作指引</title>
-  <style>
-    /* 确保body和html元素占据整个视口 */
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden; /* 防止滚动条出现 */
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>雅韵花事</title>
+    <style type="text/css">
+        /* 确保body和html元素占据整个视口 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-    body {
-  background-color: #f0f0f0; /* 可选：设置背景颜色 */
-  background: url("../img/web1.jpg") no-repeat center center;
-  background-size: cover; /* 让背景图覆盖整个容器并保持比例 */
-  background-position: center center; /* 背景居中 */
-  background-attachment: scroll; /* 移动设备上不固定背景图 */
-  height: 100vh; /* 设置背景图的高度为视口高度 */
-}
+        /* 容器设置 */
+        .container {
+            position: relative;
+            width: fit-content;
+            max-width: 100%;
+            margin: 0 auto;
+            text-align: center;
+            overflow: hidden;
+            height: 100vh;
+        }
 
-/* 当视口宽度大于768px时，恢复背景图设置 */
-@media (min-width: 768px) {
-  body {
-    background-size: cover; /* 确保背景图覆盖整个容器 */
-    background-attachment: fixed; /* 固定背景图，随着页面滚动 */
-  }
-}
+        /* 背景图片设置 */
+        .beijin {
+            max-width: 100%;
+            max-height: 100%;
+            height: 100vh;
+           
+            z-index: 0;
+        }
 
-/* 媒体查询 - 针对更小的屏幕 */
-@media (max-width: 768px) {
-  body {
-    background-size: cover; /* 确保背景图覆盖整个容器 */
-    background-position: center center; /* 背景居中 */
-  }
-}
-
-@media (max-width: 480px) {
-  body {
-    background-size: cover; /* 确保背景图覆盖整个容器 */
-    background-position: center center; /* 背景居中 */
-  }
-}
-
-    /* 当视口宽度大于768px时，恢复背景图设置 */
-    @media (min-width: 768px) {
-      body {
-        background-size: cover; /* 确保背景图覆盖整个容器 */
-        background-attachment: fixed; /* 固定背景图，随着页面滚动 */
-      }
-    }
-
-    .container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    /* 遮罩层的样式，初始为半透明黑色 */
+         /* 遮罩层的样式，初始为半透明黑色 */
     .overlay {
       position: absolute;
       top: 0;
@@ -76,144 +45,107 @@
       transition: opacity 0.5s ease; /* 过渡效果，渐变透明 */
     }
 
-    /* 提示文本样式 */
-    .tooltip-text {
-      position: absolute;
-      color: white;
-      font-family: "佛系演示体", sans-serif; /* 使用佛系演示体字体 */
-      font-weight: bold; /* 字体加粗 */
-      z-index: 2; /* 确保提示文本显示在遮罩层之上 */
-      text-align: center;
-      pointer-events: none; /* 防止文本遮挡交互 */
-      font-size: 4vw; /* 使用 vw 单位使字体大小与屏幕宽度成比例 */
-    }
+        /* 提示文本样式 */
+        .tooltip-text {
+            position: absolute;
+            color: white;
+            font-family: "佛系演示体", sans-serif;
+            font-weight: bold;
+            z-index: 2;
+            text-align: center;
+            pointer-events: none; /* 防止文本遮挡交互 */
+            font-size: 3vw;
+            display: none; /* 初始隐藏 */
+        }
 
-    /* 提示文本的初始位置 */
-    #tooltip-flower {
-      position: absolute;
-      top: 13vh; /* 调整文本位置 */
-      left: 50%;
-      transform: translateX(-50%);
-    }
+        /* 提示文本的位置设置 */
+        #tooltip-flower {
+            top: 13vh;
+            left: 50%;
+            transform: translateX(-50%);
+        }
 
-    #tooltip-vase {
-      top: 70vh;
-      left: 50%;
-      transform: translateX(-50%);
-      display: none;
-    }
+        #tooltip-vase {
+            bottom: 25vh;
+            left: 50%;
+            transform: translateX(-50%);
+        }
 
-    #tooltip-switch {
-      top: 75vh;
-      left: 20%;
-      transform: translate(-50%, -50%);
-      display: none;
-    }
+        #tooltip-switch {
+            top: 78vh;
+            left: 15%;
+            transform: translate(-50%, -50%);
+        }
 
-    /* 箭头图片样式 */
-    .arrow-img {
-      position: absolute;
-      z-index: 3;
-      width: 6vw; /* 使用 vw 单位来调整箭头的大小 */
-      height: auto;
-      filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5)); /* 添加阴影效果 */
-    }
+        /* 设置箭头样式 */
+        .arrow-up {
+            position: absolute;
+            z-index: 2;
+            top: 8vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6vw;
+            display: none; /* 初始隐藏 */
+        }
 
-    /* 向上的箭头图片 */
-    .arrow-up {
-      position: absolute;
-      top: 8vh; /* 调整箭头的位置，使其不随文本的top变化 */
-      left: 50%;
-      transform: translateX(-50%);
-      width: 6vw; /* 保持响应式的大小 */
-    }
+        .arrow-down {
+            position: absolute;
+            width: 6vw;
+            bottom: -5vh;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: none; /* 初始隐藏 */
+        }
 
-    /* 向下的箭头图片 */
-    .arrow-down {
-      bottom: -6vh;
-      left: 50%;
-      transform: translateX(-50%);
-    }
+        /* 新的指引照片 */
+        .switch-img {
+            position: absolute;
+            left: 5%;
+            bottom: 15vh;
+            width: 5vw;
+            height: auto;
+            z-index: 2;
+            display: none; /* 初始隐藏 */
+        }
 
-    @font-face {
-      font-family: 'ziti2';
-      src: url('字灵倾心体(商用需授权).ttf');
-    }
+        @font-face {
+            font-family: 'ziti2';
+            src: url('字灵倾心体(商用需授权).ttf');
+        }
 
-    #tooltip-vase, #tooltip-flower, #tooltip-switch {
-      font-family: 'ziti2';
-    }
-
-    /* 新的指引照片 */
-    .switch-img {
-      position: absolute;
-      left: 5%;
-      bottom: 15vh;
-      width: 8vw;
-      height: auto;
-      z-index: 3;
-      display: none;
-    }
-
-    /* 媒体查询 - 针对更小的屏幕 */
-    @media (max-width: 768px) {
-      #tooltip-flower, #tooltip-vase, #tooltip-switch {
-        font-size: 6vw; /* 在小屏幕下，调整字体大小 */
-      }
-
-      .arrow-img {
-        width: 10vw; /* 调整箭头图标大小 */
-      }
-
-      .switch-img {
-        width: 6vw; /* 调整指引图像大小 */
-      }
-    }
-
-    @media (max-width: 480px) {
-      #tooltip-flower, #tooltip-vase, #tooltip-switch {
-        font-size: 6vw; /* 在超小屏幕下，进一步调整字体大小 */
-      }
-
-      .arrow-img {
-        width: 10vw; /* 调整箭头图标大小 */
-      }
-
-      .switch-img {
-        width: 8vw; /* 调整指引图像大小 */
-      }
-    }
-  </style>
+        /* 设置文本字体 */
+        #tooltip-vase, #tooltip-flower, #tooltip-switch {
+            font-family: 'ziti2';
+        }
+    </style>
 </head>
 <body>
-  <!-- 容器 -->
-  <div class="container">
-    <!-- 遮罩层 -->
-    <div class="overlay"></div>
+    <!-- 容器 -->
+    <div class="container">
+        <img class="beijin" src="../img/web1.jpg" alt="背景">
+        <div class="overlay"></div>
 
-    <!-- 提示：点击这里选择花 -->
-    <div id="tooltip-flower" class="tooltip-text">
-      点击这里选择花
+        <!-- 提示：点击这里选择花 -->
+        <div id="tooltip-flower" class="tooltip-text">
+            点击这里选择花
+        </div>
+        <img class="arrow-up" src="../img/s.png" alt="向上箭头">
+
+        <!-- 提示：点击这里选择花瓶 -->
+        <div id="tooltip-vase" class="tooltip-text">
+            点击这里选择花瓶
+            <img class="arrow-down" src="../img/x.png" alt="向下箭头">
+        </div>
+
+        <!-- 新的指引：点击切换 -->
+        <div id="tooltip-switch" class="tooltip-text">
+            点击切换
+        </div>
+        <img src="../img/qx.png" alt="指引照片" class="switch-img">
     </div>
-    <img src="../img/s.png" alt="向上箭头" class="arrow-img arrow-up"> <!-- 向上的箭头图片 -->
-    
 
-    <!-- 提示：点击这里选择花瓶 -->
-    <div id="tooltip-vase" class="tooltip-text">
-      点击这里选择花瓶
-      <img src="../img/x.png" alt="向下箭头" class="arrow-img arrow-down"> <!-- 向下的箭头图片 -->
-    </div>
-
-    <!-- 新的指引：点击切换 -->
-    <div id="tooltip-switch" class="tooltip-text">
-      点击切换
-    </div>
-
-    <!-- 新的指引照片 -->
-    <img src="../img/qx.png" alt="指引照片" class="switch-img">
-  </div>
-
-  <!-- JavaScript 控制逻辑 -->
+     <!-- JavaScript 控制逻辑 -->
   <script>
     var clickCount = 0; // 点击次数计数器
 
@@ -254,6 +186,7 @@
         switchTooltip.style.display = 'none';
         switchImage.style.display = 'none'; // 隐藏指引照片
         overlay.style.opacity = '0'; // 隐藏遮罩层
+        
       }
     });
   </script>
