@@ -77,14 +77,14 @@
 
         /* 花器图片容器 */
         .vase-container {
-            position: absolute;
-            bottom: 9%; 
+            position: relative;  /* 确保容器具有相对定位 */
+            bottom: 19.5%; 
             left: 50%;
             transform: translateX(-47%);
             display: flex;
             justify-content: space-around;
             width: 70%; /* 容器宽度占80% */
-            z-index: 1;
+            z-index: 2; /* 提升图片容器的z-index */
         }
 
         /* 花器图片样式 */
@@ -94,6 +94,7 @@
             object-fit: contain;
             transition: transform 0.3s ease; /* 添加平滑缩放效果 */
             cursor: move; /* 鼠标指针变成拖动样式 */
+            z-index: 3; /* 确保图片在容器内位于最上层 */
         }
 
         .vase-container img:hover {
@@ -367,44 +368,45 @@
             }
             isMusicPlaying = !isMusicPlaying; 
         });
-         // 为所有可拖动的图片添加拖拽功能
-         const draggableImages = document.querySelectorAll('.draggable');
 
-draggableImages.forEach(img => {
-    img.addEventListener('mousedown', (e) => {
-        let offsetX = e.clientX - img.getBoundingClientRect().left;
-        let offsetY = e.clientY - img.getBoundingClientRect().top;
+        // 为所有可拖动的图片添加拖拽功能
+        const draggableImages = document.querySelectorAll('.draggable');
 
-        // 处理拖拽时的移动
-        const onMouseMove = (e) => {
-            img.style.position = 'absolute'; // 设置绝对定位
-            img.style.left = e.clientX - offsetX + 'px';
-            img.style.top = e.clientY - offsetY + 'px';
-        };
+        draggableImages.forEach(img => {
+            img.addEventListener('mousedown', (e) => {
+                let offsetX = e.clientX - img.getBoundingClientRect().left;
+                let offsetY = e.clientY - img.getBoundingClientRect().top;
 
-        // 当鼠标松开时，移除移动事件
-        const onMouseUp = () => {
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
+                // 处理拖拽时的移动
+                const onMouseMove = (e) => {
+                    img.style.position = 'absolute'; // 设置绝对定位
+                    img.style.left = e.clientX - offsetX + 'px';
+                    img.style.top = e.clientY - offsetY + 'px';
+                };
 
-            // 将图片放置到目标位置
-            const dropZone = document.querySelector('.drop-zone');
-            const dropRect = dropZone.getBoundingClientRect();
+                // 当鼠标松开时，移除移动事件
+                const onMouseUp = () => {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.removeEventListener('mouseup', onMouseUp);
 
-            if (e.clientX > dropRect.left && e.clientX < dropRect.right &&
-                e.clientY > dropRect.top && e.clientY < dropRect.bottom) {
-                img.style.left = dropRect.left + (dropRect.width - img.offsetWidth) / 2 + 'px';
-                img.style.top = dropRect.top + (dropRect.height - img.offsetHeight) / 2 + 'px';
-            }
-        };
+                    // 将图片放置到目标位置
+                    const dropZone = document.querySelector('.drop-zone');
+                    const dropRect = dropZone.getBoundingClientRect();
 
-        // 监听鼠标移动事件
-        document.addEventListener('mousemove', onMouseMove);
+                    if (e.clientX > dropRect.left && e.clientX < dropRect.right &&
+                        e.clientY > dropRect.top && e.clientY < dropRect.bottom) {
+                        img.style.left = dropRect.left + (dropRect.width - img.offsetWidth) / 2 + 'px';
+                        img.style.top = dropRect.top + (dropRect.height - img.offsetHeight) / 2 + 'px';
+                    }
+                };
 
-        // 监听鼠标松开事件
-        document.addEventListener('mouseup', onMouseUp);
-    });
-});
+                // 监听鼠标移动事件
+                document.addEventListener('mousemove', onMouseMove);
+
+                // 监听鼠标松开事件
+                document.addEventListener('mouseup', onMouseUp);
+            });
+        });
     </script>
 </body>
 </html>
