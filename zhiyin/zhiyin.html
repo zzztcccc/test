@@ -77,14 +77,14 @@
 
         /* 花器图片容器 */
         .vase-container {
-            position: relative;  /* 确保容器具有相对定位 */
-            bottom: 19.5%; 
+            position: absolute;
+            bottom: 9%; 
             left: 50%;
-            transform: translateX(-47%);
+            transform: translateX(-50%);
             display: flex;
             justify-content: space-around;
             width: 70%; /* 容器宽度占80% */
-            z-index: 2; /* 提升图片容器的z-index */
+            z-index: 1;
         }
 
         /* 花器图片样式 */
@@ -94,7 +94,6 @@
             object-fit: contain;
             transition: transform 0.3s ease; /* 添加平滑缩放效果 */
             cursor: move; /* 鼠标指针变成拖动样式 */
-            z-index: 3; /* 确保图片在容器内位于最上层 */
         }
 
         .vase-container img:hover {
@@ -188,7 +187,14 @@
             width: 8%; 
             height: auto;
         }
-
+       .yiwen{
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 5vw;
+            height: auto;
+            z-index: 1;
+       }
         @font-face {
             font-family: 'ziti2';
             src: url('字灵倾心体(商用需授权).ttf');
@@ -263,7 +269,7 @@
 
         <!-- 背景音乐控制按钮 -->
         <img id="music-btn" class="music-btn music-off" src="../img/guan.png" alt="控制背景音乐" style="position: absolute; top: 10px; right: 10px; z-index: 5;" />
-
+        <img id="yiwen" class="yiwen" src="../img/yw.png" />
         <div class="overlay"></div>
 
         <!-- 提示：点击这里选择花 -->
@@ -295,7 +301,7 @@
         var clickCount = 0; // 点击次数计数器
         var isMusicPlaying = false; // 默认音乐为关闭状态
         var musicBtn = document.getElementById("music-btn");
-        var backgroundMusic = new Audio("C:/Users/z/Documents/Rockstar Games/GTA V/User Music/Calvin Harris,Rihanna - This Is What You Came For.mp3"); 
+        var backgroundMusic = new Audio("LBI利比 - 小城夏天.mp3"); 
 
         // 添加函数用于移除所有高亮
         function removeHighlights() {
