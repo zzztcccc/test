@@ -338,19 +338,8 @@ draggableImages.forEach(img => {
             // 移除拖动副本
             removeDragGhost(ghost);
 
-            // 如果目标区域包含拖放的元素
-            const touchEndX = e.changedTouches[0].pageX;
-            const touchEndY = e.changedTouches[0].pageY;
-
-            // 获取目标区域的位置
-            const dropZoneRect = dropZone.getBoundingClientRect();
-            const isInsideDropZone =
-                touchEndX >= dropZoneRect.left &&
-                touchEndX <= dropZoneRect.right &&
-                touchEndY >= dropZoneRect.top &&
-                touchEndY <= dropZoneRect.bottom;
-
-            if (isInsideDropZone) {
+            // 如果在dropZone内，则执行放置逻辑
+            if (dropZone.contains(e.target)) {
                 dropZone.innerHTML = ''; // 清空目标区域
 
                 // 克隆原始图片并添加到目标区域，同时保持尺寸不变

@@ -4,14 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>雅韵花事</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- 引入jQuery -->
     <style type="text/css">
+      /* 保持样式不变 */
       html, body {
         width: 100%;
         height: 100%;
         margin: 0;
         padding: 0;
       }
-
       .container {
         position: relative;
         width: fit-content;
@@ -41,7 +42,7 @@
         max-width: 100%;
         max-height: 100%;
         z-index: 1;
-        transition: opacity 1s ease-out; /* 加上淡出过渡 */
+        transition: opacity 1s ease-out;
       }
 
       .zhi {
@@ -63,6 +64,7 @@
         cursor: pointer;
         z-index: 2;
       }
+
       .shang{
         position: absolute;
         width: 8%;
@@ -73,74 +75,55 @@
         z-index: 2;
       }
 
-     
-      /* 用于双指滑动时让图片淡出的样式 */
       .fade-out {
-        opacity: 0; /* 消失 */
-        transition: opacity 1s ease-out; /* 在 1 秒内淡出 */
+        opacity: 0;
+        transition: opacity 1s ease-out;
       }
     </style>
   </head>
 
   <body>
-   
-   
     <div class="container">
       <img class="beijin" src="img/背景.jpg" alt="背景">
       <img class="title" src="img/标题.png" alt="标题">
       <img class="zhi" src="img/纸上.png" alt="纸上">
       <img class="zhi1" src="img/纸下.png" alt="纸下">
-      <img class="xia" src="img/返回键3.png" alt="下标"></a>
+      <img class="xia" src="img/返回键3.png" alt="下标">
       <img class="shang" src="img/返回键2.png" alt="上标">
-      <!-- <img class="xai" src="img/下标.png" alt="下标">
-      <img class="shang" src="img/上标.jpg" alt="上标"> -->
-      
     </div>
 
     <script>
-      let isTouching = false;
       let startTouch = null;
 
-      const zhi = document.querySelector('.zhi');
-      const zhi1 = document.querySelector('.zhi1');
-      const xia = document.querySelector('.xia');
-      const shang = document.querySelector('.shang');
-      // 监听双指触摸事件
-      document.body.addEventListener('touchstart', function(e) {
-        if (e.touches.length === 2) {
-          // 记录初始触摸位置
-          startTouch = { 
-            x: e.touches[0].clientX - e.touches[1].clientX, 
-            y: e.touches[0].clientY - e.touches[1].clientY 
-          };
-        }
-      }, false);
-
-      // 判断是否是双指滑动并处理
-      document.body.addEventListener('touchmove', function(e) {
-        if (e.touches.length === 2 && startTouch) {
-            //deltaX 和 deltaY 是实时变化的
-          const deltaX = e.touches[0].clientX - e.touches[1].clientX;
-          const deltaY = e.touches[0].clientY - e.touches[1].clientY;
-
-          // 如果触摸位置变化超过阈值，即判断为滑动
-          const distX = Math.abs(deltaX - startTouch.x);
-          const distY = Math.abs(deltaY - startTouch.y);
-
-          if (distX > 50 || distY > 50) {
-            // 双指滑动检测到，触发淡出效果
-            zhi.classList.add('fade-out');
-            zhi1.classList.add('fade-out');
-            xia.classList.add('fade-out');
-            shang.classList.add('fade-out');
-            // 可以选择在动画结束后再做清理或者其他操作
-            setTimeout(() => {
-              
-              window.location.href = "./zyn/jieshao.html";
-            }, 2000); // 动画持续时间为秒
+      $(document).ready(function() {
+        // 双指触摸开始时记录位置
+        $('body').on('touchstart', function(e) {
+          if (e.touches.length === 2) {
+            startTouch = { 
+              x: e.touches[0].clientX - e.touches[1].clientX, 
+              y: e.touches[0].clientY - e.touches[1].clientY 
+            };
           }
-        }
-      }, false);
+        });
+
+        // 双指滑动时检查并触发动画
+        $('body').on('touchmove', function(e) {
+          if (e.touches.length === 2 && startTouch) {
+            const deltaX = e.touches[0].clientX - e.touches[1].clientX;
+            const deltaY = e.touches[0].clientY - e.touches[1].clientY;
+
+            const distX = Math.abs(deltaX - startTouch.x);
+            const distY = Math.abs(deltaY - startTouch.y);
+
+            if (distX > 50 || distY > 50) {
+              // 使用 jQuery 的 fadeOut 来淡出元素
+              $('.zhi, .zhi1, .xia, .shang').fadeOut(1000, function() {
+                window.location.href = "./zyn/jieshao.html"; // 动画完成后跳转
+              });
+            }
+          }
+        });
+      });
     </script>
   </body>
 </html>

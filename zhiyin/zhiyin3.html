@@ -78,26 +78,29 @@
         /* 花器图片容器 */
         .vase-container {
             position: absolute;
-           bottom: 9%; 
+            bottom: 9%; 
             left: 50%;
-            transform: translateX(-47%);
+            transform: translateX(-50%);
             display: flex;
             justify-content: space-around;
             width: 70%; /* 容器宽度占80% */
             z-index: 1;
         }
 
-        /* 花器图片样式 */
-        .vase-container img {
-            width: 20%; /* 每个花器图片宽度占容器的20% */
-            height: auto;
-            object-fit: contain;
-            transition: transform 0.3s ease; /* 添加平滑缩放效果 */
-        }
+       /* 调整 .vase-container img 的样式 */
+.vase-container img {
+    width: 20%; /* 每个花器图片宽度占容器的20% */
+    height: auto;
+    object-fit: contain;
+    cursor: grab; /* 鼠标指针为抓取状态 */
+    transition: transform 0.3s ease; /* 放大动画 */
+}
 
-        .vase-container img:hover {
-            transform: scale(1.1); /* 鼠标悬停时，放大图片 */
-        }
+/* 鼠标悬停时，放大图片 */
+.vase-container img:hover {
+    transform: scale(1.1); /* 放大效果 */
+    z-index: 2; /* 提升图片层级，避免被其他元素遮挡 */
+}
 
         /* 遮罩层的样式，初始为半透明黑色 */
         .overlay {
@@ -186,7 +189,14 @@
             width: 8%; 
             height: auto;
         }
-
+       .yiwen{
+            position: absolute;
+            top: 17px;
+            left: 15px;
+            width: 8vw;
+            height: auto;
+            z-index: 1;
+       }
         @font-face {
             font-family: 'ziti2';
             src: url('字灵倾心体(商用需授权).ttf');
@@ -215,9 +225,20 @@
             box-shadow: 0 0 20px 10px rgba(255, 255, 255, 1);  /* 增强白色高亮效果 */
             transition: box-shadow 0.3s ease-in-out;
         }
-        .draggable {
-           
-            cursor: move;
+
+        /* 固定放置的目标位置（右下角） */
+        .drop-zone {
+            position: absolute;
+            bottom: 45%;
+            right: 20%;
+            width: 20%;
+            height: 15%;
+            border: 1px dashed #ddd;
+            background-color: rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
         }
 
     </style>
@@ -239,17 +260,23 @@
             <!-- 右侧按钮 -->
             <img class="hqy-btn" src="../img/qhy.png" alt="右侧切换按钮">
         </div>
- <!-- 花器图片容器 -->
-        <div class="vase-container">
-            <img src="../img/hq1.png" alt="花器1" class="draggable" id="vase1">
-            <img src="../img/hq2.png" alt="花器2" class="draggable" id="vase2">
-            <img src="../img/hq3.png" alt="花器3" class="draggable" id="vase3">
-            <img src="../img/hq4.png" alt="花器4" class="draggable" id="vase4">
-        </div>
 
+        <!-- 花器图片容器 -->
+        <div class="vase-container">
+            <img src="../img/hq1.png" alt="花器1" class="draggable">
+            <img src="../img/hq2.png" alt="花器2" class="draggable">
+            <img src="../img/hq3.png" alt="花器3" class="draggable">
+            <img src="../img/hq4.png" alt="花器4" class="draggable">
+        </div>
+<!-- <div>
+    <img src="../img/hq5.png" alt="花器5" class="draggable">
+    <img src="../img/hq6.png" alt="花器6" class="draggable">
+    <img src="../img/hq5.png" alt="花器5" class="draggable">
+    <img src="../img/hq6.png" alt="花器6" class="draggable">
+</div> -->
         <!-- 背景音乐控制按钮 -->
         <img id="music-btn" class="music-btn music-off" src="../img/guan.png" alt="控制背景音乐" style="position: absolute; top: 10px; right: 10px; z-index: 5;" />
-
+        <img id="yiwen" class="yiwen" src="../img/yw.png" />
         <div class="overlay"></div>
 
         <!-- 提示：点击这里选择花 -->
@@ -269,6 +296,11 @@
             点击切换
         </div>
         <img src="../img/qx.png" alt="指引照片" class="switch-img">
+        
+        <!-- 固定放置的目标区域（右下角） -->
+        <div class="drop-zone">
+            拖放在这里
+        </div>
     </div>
 
     <!-- JavaScript 控制逻辑 -->
@@ -276,7 +308,7 @@
         var clickCount = 0; // 点击次数计数器
         var isMusicPlaying = false; // 默认音乐为关闭状态
         var musicBtn = document.getElementById("music-btn");
-        var backgroundMusic = new Audio("C:/Users/z/Documents/Rockstar Games/GTA V/User Music/Calvin Harris,Rihanna - This Is What You Came For.mp3"); 
+        var backgroundMusic = new Audio("LBI利比 - 小城夏天.mp3"); 
 
         // 添加函数用于移除所有高亮
         function removeHighlights() {
@@ -349,8 +381,9 @@
             }
             isMusicPlaying = !isMusicPlaying; 
         });
-         // 给所有花器图片添加拖拽功能
-         const draggableImages = document.querySelectorAll('.draggable');
+
+       // 为所有可拖动的图片添加拖拽功能
+const draggableImages = document.querySelectorAll('.draggable');
 
 draggableImages.forEach(img => {
     img.addEventListener('mousedown', (e) => {
@@ -359,14 +392,31 @@ draggableImages.forEach(img => {
 
         // 处理拖拽时的移动
         const onMouseMove = (e) => {
+            img.style.position = 'absolute'; // 设置绝对定位
             img.style.left = e.clientX - offsetX + 'px';
             img.style.top = e.clientY - offsetY + 'px';
+            img.style.zIndex = 1000; // 确保拖拽时图片位于最上层
         };
 
         // 当鼠标松开时，移除移动事件
         const onMouseUp = () => {
             document.removeEventListener('mousemove', onMouseMove);
             document.removeEventListener('mouseup', onMouseUp);
+
+            // 将图片放置到目标位置
+            const dropZone = document.querySelector('.drop-zone');
+            const dropRect = dropZone.getBoundingClientRect();
+
+            if (e.clientX > dropRect.left && e.clientX < dropRect.right &&
+                e.clientY > dropRect.top && e.clientY < dropRect.bottom) {
+                // 放置到目标区域的中央
+                img.style.left = dropRect.left + (dropRect.width - img.offsetWidth) / 2 + 'px';
+                img.style.top = dropRect.top + (dropRect.height - img.offsetHeight) / 2 + 'px';
+            }
+
+            // 重置图片的样式
+            img.style.zIndex = ''; // 取消拖拽时的层级提升
+            img.style.position = ''; // 恢复原始定位
         };
 
         // 监听鼠标移动事件
